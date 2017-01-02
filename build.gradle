@@ -1,14 +1,30 @@
 group 'com.teamtreehouse'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+buildscript{
 
-sourceCompatibility = 1.5
+    repositories{
+        mavenCentral()
+    }
+
+    dependencies{
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework:spring-orm:4.3.3.RELEASE'
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+    compile 'org.apache.tomcat:tomcat-dbcp:7.0.65'
+    compile 'com.h2database:h2:1.4.191'
 }
