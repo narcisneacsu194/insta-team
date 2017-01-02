@@ -15,8 +15,11 @@ public class Role {
     @Size(min = 3, max = 32)
     private String name;
 
-    @OneToMany
+    @OneToMany(mappedBy = "role")
     private List<Collaborator> collaborators;
+
+    @ManyToMany(mappedBy = "rolesNeeded")
+    private List<Project> projects;
 
     public Role(){
 
@@ -45,5 +48,13 @@ public class Role {
 
     public void setCollaborators(List<Collaborator> collaborators) {
         this.collaborators = collaborators;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

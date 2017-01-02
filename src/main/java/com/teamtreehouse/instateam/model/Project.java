@@ -78,4 +78,5 @@ public class Project {
     public void setCollaboratorsAssigned(List<Collaborator> collaboratorsAssigned) {
         this.collaboratorsAssigned = collaboratorsAssigned;
     }
+
 }
