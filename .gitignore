@@ -46,11 +46,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.iml
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/gradle.xml
-.idea/libraries/Gradle__junit_junit_4_11.xml
-.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
+.idea/
