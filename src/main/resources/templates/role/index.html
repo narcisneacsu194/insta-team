@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head th:replace="layout :: head"></head>
+    <body>
+        <header th:replace="layout :: header"></header>
+        <nav th:replace="layout :: nav"></nav>
+        <section>
+            <div class="container wrapper">
+                <form th:action="@{/add-role}" method="post" th:object="${role}" id="addRoleForm">
+                    <div>
+                        <h2>Manage Roles</h2>
+                        <ul class="checkbox-list">
+                            <!--<li th:each="role : ${roles}"><span class="primary" th:text="${role.name}"></span></li>-->
+                            <li th:each="role : ${roles}"><a th:href="@{|/roles/${role.id}/detail|}" class="primary" th:text="${role.name}"></a></li>
+                        </ul>
+                    </div>
+                    <div class="actions add-new-role">
+                        <input th:field="*{name}" type="text" placeholder="New Role..." />
+                        <a href="#" onclick="document.getElementById('addRoleForm').submit()" class="button">Add</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    <div th:replace="layout :: flash"></div>
+    </body>
+</html>

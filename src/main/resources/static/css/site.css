@@ -407,7 +407,27 @@ form .add-new-collaborator .button {
 	margin: 0;
 }
 
+/* ==========================================================================
+   Notification Style
+   ========================================================================== */
 
+.flash {
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	padding: 1rem 2rem;
+	border-radius: 4px;
+	font-size: 1.1rem;
+}
+
+.flash.success {
+	background-color: #7f9e40;
+	color: #f3f6ee;
+}
+
+.flash.failure {
+	background-color: #ac4343;
+	color: #f2e2e2;
+}
 
 
 
