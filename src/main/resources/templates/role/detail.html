@@ -16,11 +16,6 @@
                 </div>
             </div>
         </form>
-        <form th:action="@{|/roles/${role.id}/delete|}" method="post" th:object="${role}" id="deleteRoleForm">
-            <div class="actions add-new-role">
-                <a href="#" onclick="document.getElementById('deleteRoleForm').submit()" class="button">Del</a>
-            </div>
-        </form>
     </div>
 </section>
 <div th:replace="layout :: flash"></div>

@@ -6,63 +6,35 @@
         <nav th:replace="layout :: nav"></nav>
         <section>
             <div class="container wrapper">
-                <form>
+                <form th:action="@{/add-collaborator}" method="post" th:object="${collaborator}" id="add-collaborator-form">
                     <h2>Manage Collaborators</h2>
                     <ul class="checkbox-list">
-                        <li>
-                            <span class="primary">Michael Pemulius</span>
+                        <li th:each="collaborator : ${collaborators}">
+                            <a class="primary" th:text="${collaborator.name}" th:href="@{|/collaborators/${collaborator.id}/detail|}"></a>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
                                 <select>
-                                    <option value="#" class="selected">Designer</option>
-                                    <option value="#">Developer</option>
-                                    <option value="#">QA</option>
-                                    <option value="#">DevOps</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="primary">Don Gately</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Designer</option>
-                                    <option value="#" class="selected">Developer</option>
-                                    <option value="#">QA</option>
-                                    <option value="#">DevOps</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="primary">Joelle Van Dyne</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Designer</option>
-                                    <option value="#">Developer</option>
-                                    <option value="#" class="selected">QA</option>
-                                    <option value="#">DevOps</option>
+                                    <option th:text="${collaborator.role.name}" value="#"></option>
+                                    <option th:if="${!role.name.equals(collaborator.role.name)}" value="#" th:each="role : ${roles}"
+                                            th:text="${role.name}"></option>
                                 </select>
                             </div>
                         </li>
                     </ul>
                     <div class="actions add-new-collaborator">
-                        <input type="text" placeholder="Name..."/>
+                        <input type="text" placeholder="Name..." th:field="*{name}"/>
                         <div class="custom-select">
                             <span class="dropdown-arrow"></span>
-                            <select>
-                                <option value="#" class="disabled">Role...</option>
-                                <option value="#">Developer</option>
-                                <option value="#">Designer</option>
-                                <option value="#">QA</option>
-                                <option value="#">DevOps</option>
-                                <option value="#">Copywriter</option>
+                            <select th:field="*{role.id}">
+                                <!--<option value="#">Role...</option>-->
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
                             </select>
                         </div>
-                        <a class="button" href="#">Add</a>
+                        <a class="button" href="#" onclick="document.getElementById('add-collaborator-form').submit()">Add</a>
                     </div>
                 </form>
             </div>
         </section>
+        <div th:replace="layout :: flash"></div>
     </body>
 </html>

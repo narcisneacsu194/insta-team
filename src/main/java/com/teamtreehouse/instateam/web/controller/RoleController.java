@@ -35,6 +35,7 @@ public class RoleController {
             redirectAttributes.addFlashAttribute("flash",
                     new FlashMessage("The name you have used for the role is invalid. Please try again.",
                     FlashMessage.Status.FAILURE));
+            redirectAttributes.addFlashAttribute("role", role);
             return "redirect:/roles";
         }
         roleService.save(role);
@@ -60,17 +61,4 @@ public class RoleController {
 
         return String.format("redirect:/roles/%s/detail", role.getId());
     }
-
-    @RequestMapping(value = "/roles/{roleId}/delete", method = RequestMethod.POST)
-    public String deleteRole(@PathVariable Long roleId, RedirectAttributes redirectAttributes){
-        Role role = roleService.findById(roleId);
-        redirectAttributes.addFlashAttribute("flash",
-                new FlashMessage(String.format("The role %s has been deleted",
-                        role.getName()),
-                        FlashMessage.Status.SUCCESS));
-        roleService.delete(role);
-
-        return "redirect:/roles";
-    }
-
 }

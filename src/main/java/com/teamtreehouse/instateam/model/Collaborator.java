@@ -3,7 +3,6 @@ package com.teamtreehouse.instateam.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 public class Collaborator {
@@ -12,15 +11,11 @@ public class Collaborator {
     private Long id;
 
     @NotNull
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 20)
     private String name;
 
-    @NotNull
     @ManyToOne
     private Role role;
-
-    @ManyToMany
-    private List<Project> projects;
 
     public Collaborator(){
 
@@ -50,11 +45,4 @@ public class Collaborator {
         this.role = role;
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
 }

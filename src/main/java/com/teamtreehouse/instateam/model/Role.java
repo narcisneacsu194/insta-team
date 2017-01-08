@@ -15,16 +15,12 @@ public class Role {
     @Size(min = 3, max = 32)
     private String name;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Collaborator> collaborators;
-
-    @ManyToMany(mappedBy = "rolesNeeded")
-    private List<Project> projects;
 
     public Role(){
 
     }
-
 
     public Long getId() {
         return id;
@@ -50,11 +46,4 @@ public class Role {
         this.collaborators = collaborators;
     }
 
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
 }

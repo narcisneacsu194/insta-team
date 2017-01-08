@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="layout :: head"></head>
+<body>
+<header th:replace="layout :: header"></header>
+<nav th:replace="layout :: nav"></nav>
+<section>
+    <div class="container wrapper">
+        <form th:action="@{/collaborators/${collaborator.id}/edit}" method="post" th:object="${collaborator}"
+            id="editCollaboratorForm">
+            <input type="hidden" th:field="*{id}"/>
+            <div>
+                <h2 th:text="*{name}"></h2>
+                <div class="actions add-new-role">
+                    <input th:field="*{name}" type="text" placeholder="Edit Collaborator..." />
+                    <div class="custom-select">
+                        <span class="dropdown-arrow"></span>
+                        <select th:field="*{role.id}">
+                            <option th:text="${collaborator.role.name}" th:value="${collaborator.role.id}"></option>
+                            <option th:if="${!role.name.equals(collaborator.role.name)}" th:value="${role.id}" th:each="role : ${roles}"
+                                    th:text="${role.name}"></option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="document.getElementById('editCollaboratorForm').submit()" class="button">Edit</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<div th:replace="layout :: flash"></div>
+</body>
+</html>
