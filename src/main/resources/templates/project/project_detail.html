@@ -1,56 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>InstaTeam</title>
-        <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/site.css">
-    </head>
+    <head th:replace="layout :: head"></head>
     <body>
-        <header>
-            <div class="container">
-                <div class="site-header">
-                    <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
-                </div>
-            </div>
-        </header>
-        <nav>
-            <ul>
-                <li class="selected"><a href="index.html">Projects</a></li>
-                <li><a href="../collaborator/index.html">Collaborators</a></li>
-                <li><a href="../role/index.html">Roles</a></li>
-            </ul>
-        </nav>
+        <header th:replace="layout :: header"></header>
+        <nav th:replace="layout :: nav"></nav>
         <section>
             <div class="container wrapper">
                 <div class="project-list single">
                     <div class="project">
-                        <h2>Website Project</h2>
-                        <p>Design and build a custom website</p>
-                        <span class="tag active">Active</span>
+                        <h2 th:text="${project.name}">Website Project</h2>
+                        <p th:text="${project.description}">Design and build a custom website</p>
+                        <span th:text="${project.status}" th:classappend="${#strings.toLowerCase(project.status)}" class="tag active">Active</span>
                     </div>
                     <div class="roles-collaborators">
                         <h3>Roles &amp; Collaborators</h3>
-                        <div class="list-item">
-                            <span class="primary">Developer</span>
-                            <span class="secondary">Michael Pemulis</span>
+                        <!--<div th:each="collaborator : ${collaborators}" class="list-item">-->
+                            <!--<span th:text="${collaborator.role.name}" class="primary"></span>-->
+                            <!--<span th:text="${collaborator.name}" class="secondary"></span>-->
+                        <!--</div>-->
+                        <div th:each="role : ${roles}" class="list-item">
+                            <span th:text="${role.name}" class="primary"></span>
                         </div>
-                        <div class="list-item">
-                            <span class="primary">Designer</span>
-                            <span class="secondary">Don Gately</span>
-                        </div>
-                        <div class="list-item">
-                            <span class="primary">QA</span>
-                                <span class="secondary">Joelle Van Dyne</span>
-                            </div>
-                        <div class="list-item">
-                            <span class="primary">DevOps</span>
-                            <span class="secondary">[Unassigned]</span>
-                        </div>
+                        <!--<div class="list-item">-->
+                            <!--<span class="primary">Designer</span>-->
+                            <!--<span class="secondary">Don Gately</span>-->
+                        <!--</div>-->
+                        <!--<div class="list-item">-->
+                            <!--<span class="primary">QA</span>-->
+                                <!--<span class="secondary">Joelle Van Dyne</span>-->
+                            <!--</div>-->
+                        <!--<div class="list-item">-->
+                            <!--<span class="primary">DevOps</span>-->
+                            <!--<span class="secondary">[Unassigned]</span>-->
+                        <!--</div>-->
                     </div>
                     <div class="actions">
                         <a class="button" href="edit_project.html">Edit Project</a>
@@ -59,5 +41,6 @@
                 </div>
             </div>
         </section>
+    <div th:replace="layout :: flash"></div>
     </body>
 </html>

@@ -3,6 +3,7 @@ package com.teamtreehouse.instateam.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,12 +12,15 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+//    @NotNull
     @Size(min = 3, max = 32)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Collaborator> collaborators;
+
+    @ManyToMany
+    private List<Project> projects = new ArrayList<>();
 
     public Role(){
 

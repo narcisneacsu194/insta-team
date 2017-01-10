@@ -7,28 +7,15 @@
         <section>
             <div class="container wrapper">
                 <div class="project-list">
-                    <div class="project">
-                        <h2><a href="project_detail.html">Website Project</a></h2>
-                        <p>Design and build a custom website</p>
-                        <span class="tag active">Active</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">App Project</a></h2>
-                        <p>Design and build a web app</p>
-                        <span class="tag active">Active</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">Poster Design</a></h2>
-                        <p>Create a poster design</p>
-                        <span class="tag archived">Archived</span>
-                    </div>
-                    <div class="project">
-                        <h2><a href="#">Mobile App</a></h2>
-                        <p>Design and build a mobile app</p>
-                        <span class="tag active">Active</span>
+                    <div th:each="project : ${projects}" class="project">
+                        <h2><a th:href="@{|/projects/${project.id}/detail|}" th:text="${project.name}"></a></h2>
+                        <p th:text="${project.description}"></p>
+                        <!--<span class="tag active" th:text="${project.status}">Active</span>-->
+                        <span th:classappend="${#strings.toLowerCase(project.status)}" class="tag" th:text="${project.status}"></span>
                     </div>
                 </div>
             </div>
         </section>
+    <div th:replace="layout :: flash"></div>
     </body>
 </html>

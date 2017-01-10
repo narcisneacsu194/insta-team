@@ -6,41 +6,52 @@
         <nav th:replace="layout :: nav"></nav>
         <section>
             <div class="container wrapper">
-                <form>
+                <form th:action="@{/add-project}" method="post" th:object="${project}">
                     <div>
-                        <label for="project_name"> Project Name:</label>
-                        <input type="text" name="project_name"/>
+                        <label>Project Name:</label>
+                        <input type="text" th:field="*{name}"/>
                     </div>
                     <div>
-                        <label for="project_description">Project Description:</label>
-                        <textarea rows="4" name="project_description"></textarea>
+                        <label>Project Description:</label>
+                        <textarea rows="4" th:field="*{description}"></textarea>
                     </div>
                     <div>
-                        <label for="project_status">Project Status:</label>
+                        <label>Project Status:</label>
                         <div class="custom-select">
                         <span class="dropdown-arrow"></span>
-                            <select name="project_status">
-                                <option value="active">Active</option>
-                                <option value="archived">Archived</option>
-                                <option value="not_started">Not Started</option>
+                            <select th:field="*{status}">
+                                <option th:value="active">Active</option>
+                                <option th:value="archived">Archived</option>
+                                <option th:value="not_started">Not Started</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label for="project_roles">Project Roles:</label>
+                        <label>Project Roles:</label>
                         <ul class="checkbox-list">
                             <li th:each="role : ${roles}">
-                                <input type="checkbox" name="project_roles" value="${role.name}"/>
+                                <select th:field="*{rolesNeeded[__${roleStat.index}__].id}">
+                                    <option th:value="${role.id}"></option>
+                                </select>
+                                <!--/*
+                                     here we set selected role name of
+                                     rolesNeeded. Without this name will be null
+                                */-->
+                                <select th:field="*{rolesNeeded[__${roleStat.index}__].name}">
+                                    <option th:value="${role.name}"></option>
+                                </select>
+                                <input type="checkbox" th:field="*{rolesNeeded[__${roleStat.index}__]}" th:value="${role}"/>
                                 <span class="primary" th:text=" ${role.name}"></span>
                             </li>
                         </ul>
                     </div>
                     <div class="actions">
                         <input type="submit" value="Save" class="button"/>
-                        <a href="#" class="button button-secondary">Cancel</a>
+                        <a th:href="@{/}" class="button button-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
         </section>
+    <div th:replace="layout :: flash"></div>
     </body>
 </html>

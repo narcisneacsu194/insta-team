@@ -1,8 +1,10 @@
 package com.teamtreehouse.instateam.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Fetch;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +23,11 @@ public class Project {
 
     private String status;
 
-    @ManyToMany
-    private List<Role> rolesNeeded;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "projects")
+    private List<Role> rolesNeeded = new ArrayList<>();
 
-    @ManyToMany
-    private List<Collaborator> collaboratorsAssigned;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Collaborator> collaboratorsAssigned = new ArrayList<>();
 
     public Project(){
 
