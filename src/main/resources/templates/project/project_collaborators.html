@@ -1,78 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>InstaTeam</title>
-        <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/site.css">
-    </head>
+    <head th:replace="layout :: head"></head>
     <body>
-        <header>
-            <div class="container">
-                <div class="site-header">
-                    <a class="logo" href="index.html">InstaTeam</a>
-                    <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
-                </div>
-            </div>
-        </header>
-        <nav>
-            <ul>
-                <li class="selected"><a href="index.html">Projects</a></li>
-                <li><a href="../collaborator/index.html">Collaborators</a></li>
-                <li><a href="../role/index.html">Roles</a></li>
-            </ul>
-        </nav>
+        <header th:replace="layout :: header"></header>
+        <nav th:replace="layout :: nav"></nav>
         <section>
             <div class="container wrapper">
-                <form>
-                    <label>Edit Collaborators: Website Project</label>
+                <form th:action="@{|/edit-collaborators/${project.id}|}" method="post" th:object="${project}">
+                    <label th:text="|Edit Collaborators: *{name}|"></label>
+                    <input type="hidden" th:field="*{id}"/>
                     <ul class="checkbox-list">
-                        <li><span class="primary">Developer</span>
+                        <li th:each="role : ${roles}"><span class="primary" th:text="${role.name}"></span>
                             <div class="custom-select">
                                 <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Michael Pemulis</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">Designer</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Don Gately</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">QA</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Joelle Van Dyne</option>
-                                    <option value="#">Name</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span class="primary">DevOps</span>
-                            <div class="custom-select">
-                                <span class="dropdown-arrow"></span>
-                                <select>
-                                    <option value="#">Choose...</option>
-                                    <option value="#">Name</option>
+                                <select th:field="*{collaboratorsAssigned[__${roleStat.index}__].id}">
+                                    <option value="0">[Unassigned]</option>
+                                    <option th:each="collaborator : ${role.collaborators}" th:value="${collaborator.id}"
+                                    th:text="${collaborator.name}"></option>
                                 </select>
                             </div>
                         </li>
                     </ul>
                     <div class="actions">
-                        <input type="submit" value="Save" class="button">
-                        <a href="#" class="button button-secondary">Cancel</a>
+                        <input type="submit" value="Save" class="button"/>
+                        <a th:href="@{|/projects/${project.id}/detail|}" class="button button-secondary">Cancel</a>
                     </div>
                 </form>
             </div>
         </section>
+    <div th:replace="layout :: flash"></div>
     </body>
 </html>

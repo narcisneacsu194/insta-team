@@ -7,6 +7,7 @@
         <section>
             <div class="container wrapper">
                 <form th:action="@{/add-project}" method="post" th:object="${project}">
+                    <input type="hidden" th:field="*{id}"/>
                     <div>
                         <label>Project Name:</label>
                         <input type="text" th:field="*{name}"/>
@@ -30,24 +31,14 @@
                         <label>Project Roles:</label>
                         <ul class="checkbox-list">
                             <li th:each="role : ${roles}">
-                                <select th:field="*{rolesNeeded[__${roleStat.index}__].id}">
-                                    <option th:value="${role.id}"></option>
-                                </select>
-                                <!--/*
-                                     here we set selected role name of
-                                     rolesNeeded. Without this name will be null
-                                */-->
-                                <select th:field="*{rolesNeeded[__${roleStat.index}__].name}">
-                                    <option th:value="${role.name}"></option>
-                                </select>
-                                <input type="checkbox" th:field="*{rolesNeeded[__${roleStat.index}__]}" th:value="${role}"/>
+                                <input type="checkbox" th:field="*{rolesNeeded}" th:value="${role.id}"/>
                                 <span class="primary" th:text=" ${role.name}"></span>
                             </li>
                         </ul>
                     </div>
                     <div class="actions">
                         <input type="submit" value="Save" class="button"/>
-                        <a th:href="@{/}" class="button button-secondary">Cancel</a>
+                        <a th:href="@{|/projects/${project.id}/detail|}" class="button button-secondary">Cancel</a>
                     </div>
                 </form>
             </div>

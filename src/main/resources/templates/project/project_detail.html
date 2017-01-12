@@ -14,29 +14,28 @@
                     </div>
                     <div class="roles-collaborators">
                         <h3>Roles &amp; Collaborators</h3>
-                        <!--<div th:each="collaborator : ${collaborators}" class="list-item">-->
-                            <!--<span th:text="${collaborator.role.name}" class="primary"></span>-->
-                            <!--<span th:text="${collaborator.name}" class="secondary"></span>-->
-                        <!--</div>-->
                         <div th:each="role : ${roles}" class="list-item">
                             <span th:text="${role.name}" class="primary"></span>
+                            <span class="secondary" th:if="${project.collaboratorsAssigned.size() == 0}">
+                                [Unassigned]
+                            </span>
+                            <div th:if="${project.collaboratorsAssigned.size() > 0}">
+                                <span th:if="${project.collaboratorsAssigned[__${roleStat.index}__] != null}"
+                                      th:text="${project.collaboratorsAssigned[__${roleStat.index}__].name}" class="secondary"></span>
+                                <span th:if="${project.collaboratorsAssigned[__${roleStat.index}__] == null}"
+                                      class="secondary">
+                                    [Unassigned]
+                                </span>
+                            </div>
                         </div>
-                        <!--<div class="list-item">-->
-                            <!--<span class="primary">Designer</span>-->
-                            <!--<span class="secondary">Don Gately</span>-->
-                        <!--</div>-->
-                        <!--<div class="list-item">-->
-                            <!--<span class="primary">QA</span>-->
-                                <!--<span class="secondary">Joelle Van Dyne</span>-->
-                            <!--</div>-->
-                        <!--<div class="list-item">-->
-                            <!--<span class="primary">DevOps</span>-->
-                            <!--<span class="secondary">[Unassigned]</span>-->
+                        <!--<div th:each="collaborator : ${collaborators}" class="list-item">-->
+                            <!--<span th:text="${collaborator.name}" class="primary"></span>-->
+                            <!--<span class="secondary"></span>-->
                         <!--</div>-->
                     </div>
                     <div class="actions">
-                        <a class="button" href="edit_project.html">Edit Project</a>
-                        <a class="button" href="project_collaborators.html">Edit Collaborators</a>
+                        <a class="button" th:href="@{|/projects/${project.id}/edit|}">Edit Project</a>
+                        <a class="button" th:href="@{|/projects/${project.id}/collaborators|}">Edit Collaborators</a>
                     </div>
                 </div>
             </div>

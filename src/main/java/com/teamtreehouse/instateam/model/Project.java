@@ -23,7 +23,7 @@ public class Project {
 
     private String status;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "projects")
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> rolesNeeded = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -79,6 +79,14 @@ public class Project {
 
     public void setCollaboratorsAssigned(List<Collaborator> collaboratorsAssigned) {
         this.collaboratorsAssigned = collaboratorsAssigned;
+    }
+
+    public void addRole(Role role){
+        rolesNeeded.add(role);
+    }
+
+    public void addCollaborator(Collaborator collaborator){
+        collaboratorsAssigned.add(collaborator);
     }
 
 }

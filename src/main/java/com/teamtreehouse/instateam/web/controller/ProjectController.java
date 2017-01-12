@@ -7,7 +7,6 @@ import com.teamtreehouse.instateam.service.CollaboratorService;
 import com.teamtreehouse.instateam.service.ProjectService;
 import com.teamtreehouse.instateam.service.RoleService;
 import com.teamtreehouse.instateam.web.FlashMessage;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.SimpleFormatter;
 
 @Controller
 public class ProjectController {
@@ -46,17 +42,8 @@ public class ProjectController {
     public String projectDetails(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
         model.addAttribute("project", project);
-        Collaborator collaborator = collaboratorService.findById(50L);
-        String collaboratorName = collaborator.getName();
-        Role role = collaborator.getRole();
-        String roleName = role.getName();
-//        List<Role> roleList = project.getRolesNeeded();
-//        String var;
-//        for(Role role : roleList){
-//            var = role.getName();
-//        }
         model.addAttribute("roles", project.getRolesNeeded());
-//        model.addAttribute("collaborators", collaboratorService.findAll());
+        model.addAttribute("collaborators", project.getCollaboratorsAssigned());
         return "project/project_detail";
     }
 
@@ -72,21 +59,54 @@ public class ProjectController {
 
     @RequestMapping(value = "/add-project", method = RequestMethod.POST)
     public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes){
-//        if(result.hasErrors()){
-//            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project information is invalid. Please try again.",
-//                    FlashMessage.Status.FAILURE));
-//            redirectAttributes.addFlashAttribute("project", project);
-//            return "redirect:/project-form";
-//        }
-//        List<Role> roleList = project.getRolesNeeded();
-//        String var;
-//        for(Role role : roleList){
-//            var = role.getName();
-//        }
+        Project newProject = project;
+        if(result.hasErrors()){
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project information is invalid. Please try again.",
+                    FlashMessage.Status.FAILURE));
+            redirectAttributes.addFlashAttribute("project", project);
+            return "redirect:/project-form";
+        }
         projectService.save(project);
         redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project %s has been added successfully.", project.getName()),
                 FlashMessage.Status.SUCCESS));
         redirectAttributes.addFlashAttribute("project", project);
+        return String.format("redirect:/projects/%s/detail", project.getId());
+    }
+
+    @RequestMapping(value = "/projects/{projectId}/collaborators")
+    public String editProjectCollaborators(@PathVariable Long projectId, Model model){
+        Project project = projectService.findById(projectId);
+        List<Role> roles = new ArrayList<>();
+
+        for(Role role : project.getRolesNeeded()){
+            roles.add(roleService.findById(role.getId()));
+        }
+
+        model.addAttribute("roles", roles);
+        model.addAttribute("project", project);
+        return "project/project_collaborators";
+    }
+
+    @RequestMapping(value = "/projects/{projectId}/edit")
+    public String editProject(@PathVariable Long projectId, Model model){
+        Project project = projectService.findById(projectId);
+        model.addAttribute("project", project);
+        model.addAttribute("roles", roleService.findAll());
+        return "project/edit_project";
+    }
+
+    @RequestMapping(value = "/edit-collaborators/{projectId}", method = RequestMethod.POST)
+    public String editCollaborators(@PathVariable Long projectId, Project project, RedirectAttributes redirectAttributes){
+        Project actualProject = projectService.findById(projectId);
+        List<Collaborator> collaborators = project.getCollaboratorsAssigned();
+        List<Collaborator> actualCollaborators = new ArrayList<>();
+        for(Collaborator collaborator : collaborators){
+            actualCollaborators.add(collaboratorService.findById(collaborator.getId()));
+        }
+        actualProject.setCollaboratorsAssigned(actualCollaborators);
+        projectService.save(actualProject);
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project collaborators have been edited successfully."),
+                FlashMessage.Status.SUCCESS));
         return String.format("redirect:/projects/%s/detail", project.getId());
     }
 }

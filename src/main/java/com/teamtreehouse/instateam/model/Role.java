@@ -16,11 +16,11 @@ public class Role {
     @Size(min = 3, max = 32)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Collaborator> collaborators;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
+    private List<Collaborator> collaborators = new ArrayList<>();
 
-    @ManyToMany
-    private List<Project> projects = new ArrayList<>();
+    @ManyToMany(mappedBy = "rolesNeeded", fetch = FetchType.LAZY)
+    private List<Project> projects;
 
     public Role(){
 
@@ -49,5 +49,23 @@ public class Role {
     public void setCollaborators(List<Collaborator> collaborators) {
         this.collaborators = collaborators;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        if (id != role.id) return false;
+        return name != null ? name.equals(role.name) : role.name == null;
+
+    }
+//    @Override
+//    public long hashCode() {
+//        long result = id;
+//        result = 31 * result + (name != null ? name.hashCode() : 0);
+//        return result;
+//    }
 
 }
