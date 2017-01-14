@@ -63,11 +63,5 @@ public class Role {
         return name != null ? name.equals(role.name) : role.name == null;
 
     }
-//    @Override
-//    public long hashCode() {
-//        long result = id;
-//        result = 31 * result + (name != null ? name.hashCode() : 0);
-//        return result;
-//    }
 
 }

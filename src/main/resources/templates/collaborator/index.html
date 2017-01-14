@@ -26,7 +26,6 @@
                         <div class="custom-select">
                             <span class="dropdown-arrow"></span>
                             <select th:field="*{role.id}">
-                                <!--<option value="#">Role...</option>-->
                                 <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
                             </select>
                         </div>

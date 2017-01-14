@@ -18,7 +18,7 @@
         </form>
 
         <form th:action="@{|/roles/${role.id}/delete|}" method="post" th:object="${role}">
-            <input type="submit" value="Delete" class="button"/>
+            <input type="submit" value="Delete" class="button" id="role-delete-button"/>
         </form>
     </div>
 </section>

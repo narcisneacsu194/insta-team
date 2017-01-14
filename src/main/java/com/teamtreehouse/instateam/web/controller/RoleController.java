@@ -39,6 +39,9 @@ public class RoleController {
             return "redirect:/roles";
         }
         roleService.save(role);
+        redirectAttributes.addFlashAttribute("flash",
+                new FlashMessage(String.format("Role '%s' has been successfully added.", role.getName()),
+                        FlashMessage.Status.SUCCESS));
         return "redirect:/roles";
     }
 
@@ -56,8 +59,13 @@ public class RoleController {
                     FlashMessage.Status.FAILURE));
             return String.format("redirect:/roles/%s/detail", role.getId());
         }
-
+        String oldName = roleService.findById(role.getId()).getName();
         roleService.save(role);
+        String newName = role.getName();
+
+        redirectAttributes.addFlashAttribute("flash",
+                new FlashMessage(String.format("Role '%s' has been renamed to '%s'.", oldName, newName) ,
+                        FlashMessage.Status.SUCCESS));
 
         return String.format("redirect:/roles/%s/detail", role.getId());
     }

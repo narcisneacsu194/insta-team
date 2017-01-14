@@ -49,12 +49,13 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/project-form")
-    public String projectForm(Model model){
+    public String projectAddForm(Model model){
         if(!model.containsAttribute("project")){
             model.addAttribute("project", new Project());
         }
 
         model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("action", "add-project");
         return "project/edit_project";
     }
 
@@ -68,7 +69,7 @@ public class ProjectController {
         }
         project.setDateCreated(new Date());
         projectService.save(project);
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project %s has been added successfully.", project.getName()),
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project '%s' has been added successfully.", project.getName()),
                 FlashMessage.Status.SUCCESS));
         redirectAttributes.addFlashAttribute("project", project);
         return String.format("redirect:/projects/%s/detail", project.getId());
@@ -89,11 +90,30 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/projects/{projectId}/edit")
-    public String editProject(@PathVariable Long projectId, Model model){
+    public String projectEditForm(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
         model.addAttribute("project", project);
         model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("action", "edit-project");
         return "project/edit_project";
+    }
+
+    @RequestMapping(value = "/edit-project", method = RequestMethod.POST)
+    public String editProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes){
+        if(result.hasErrors()){
+            redirectAttributes.addFlashAttribute("flash",
+                    new FlashMessage("The project information provided is invalid. Try again",
+                            FlashMessage.Status.FAILURE));
+            redirectAttributes.addFlashAttribute("project", project);
+            return String.format("redirect:/projects/%s/edit", project.getId());
+        }
+        String oldName = projectService.findById(project.getId()).getName();
+        project.setDateCreated(new Date());
+        projectService.save(project);
+        redirectAttributes.addFlashAttribute("flash",
+                new FlashMessage(String.format("Project %s has been successfully edited.", oldName),
+                        FlashMessage.Status.SUCCESS));
+        return String.format("redirect:/projects/%s/detail", project.getId());
     }
 
     @RequestMapping(value = "/edit-collaborators/{projectId}", method = RequestMethod.POST)
@@ -106,7 +126,7 @@ public class ProjectController {
         }
         actualProject.setCollaboratorsAssigned(actualCollaborators);
         projectService.save(actualProject);
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project collaborators have been edited successfully."),
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project collaborators have been added/edited successfully."),
                 FlashMessage.Status.SUCCESS));
         return String.format("redirect:/projects/%s/detail", project.getId());
     }
@@ -114,7 +134,7 @@ public class ProjectController {
     @RequestMapping(value = "/projects/{projectId}/delete", method = RequestMethod.POST)
     public String deleteProject(@PathVariable Long projectId, RedirectAttributes redirectAttributes){
         Project project = projectService.findById(projectId);
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project %s has been deleted successfully.", project.getName()),
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project '%s' has been deleted successfully.", project.getName()),
                 FlashMessage.Status.SUCCESS));
         projectService.delete(project);
         return "redirect:/";

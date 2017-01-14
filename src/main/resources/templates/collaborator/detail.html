@@ -15,7 +15,7 @@
                     <input th:field="*{name}" type="text" placeholder="Edit Collaborator..." />
                     <div class="custom-select">
                         <span class="dropdown-arrow"></span>
-                        <select th:field="*{role.id}">
+                        <select th:field="*{role.id}" id="collaborator-role-dropdown">
                             <option th:text="${collaborator.role.name}" th:value="${collaborator.role.id}"></option>
                             <option th:if="${!role.name.equals(collaborator.role.name)}" th:value="${role.id}" th:each="role : ${roles}"
                                     th:text="${role.name}"></option>
@@ -27,7 +27,7 @@
         </form>
 
         <form th:action="@{|/collaborators/${collaborator.id}/delete|}" method="post" th:object="${collaborator}">
-            <input type="submit" value="Delete" class="button"/>
+            <input type="submit" value="Delete" class="button" id="collaborator-delete-button"/>
         </form>
 
     </div>
