@@ -61,4 +61,14 @@ public class RoleController {
 
         return String.format("redirect:/roles/%s/detail", role.getId());
     }
+
+    @RequestMapping(value = "/roles/{roleId}/delete", method = RequestMethod.POST)
+    public String deleteRole(@PathVariable Long roleId, RedirectAttributes redirectAttributes){
+        Role role = roleService.findById(roleId);
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Role '%s' has been deleted successfuly.",
+                role.getName()),
+                FlashMessage.Status.SUCCESS));
+        roleService.delete(role);
+        return "redirect:/roles";
+    }
 }

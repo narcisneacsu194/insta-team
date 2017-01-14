@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -59,13 +60,13 @@ public class ProjectController {
 
     @RequestMapping(value = "/add-project", method = RequestMethod.POST)
     public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes){
-        Project newProject = project;
         if(result.hasErrors()){
             redirectAttributes.addFlashAttribute("flash", new FlashMessage("The project information is invalid. Please try again.",
                     FlashMessage.Status.FAILURE));
             redirectAttributes.addFlashAttribute("project", project);
             return "redirect:/project-form";
         }
+        project.setDateCreated(new Date());
         projectService.save(project);
         redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project %s has been added successfully.", project.getName()),
                 FlashMessage.Status.SUCCESS));
@@ -108,5 +109,14 @@ public class ProjectController {
         redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project collaborators have been edited successfully."),
                 FlashMessage.Status.SUCCESS));
         return String.format("redirect:/projects/%s/detail", project.getId());
+    }
+
+    @RequestMapping(value = "/projects/{projectId}/delete", method = RequestMethod.POST)
+    public String deleteProject(@PathVariable Long projectId, RedirectAttributes redirectAttributes){
+        Project project = projectService.findById(projectId);
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project %s has been deleted successfully.", project.getName()),
+                FlashMessage.Status.SUCCESS));
+        projectService.delete(project);
+        return "redirect:/";
     }
 }

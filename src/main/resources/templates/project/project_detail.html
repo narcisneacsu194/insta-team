@@ -9,7 +9,8 @@
                 <div class="project-list single">
                     <div class="project">
                         <h2 th:text="${project.name}">Website Project</h2>
-                        <p th:text="${project.description}">Design and build a custom website</p>
+                        <p th:text="${project.description}">Design and build a custom website</p><br/>
+                        <time th:text="|Date Created: ${#dates.format(project.dateCreated, 'dd MMM yyyy')}|"></time>
                         <span th:text="${project.status}" th:classappend="${#strings.toLowerCase(project.status)}" class="tag active">Active</span>
                     </div>
                     <div class="roles-collaborators">
@@ -28,14 +29,13 @@
                                 </span>
                             </div>
                         </div>
-                        <!--<div th:each="collaborator : ${collaborators}" class="list-item">-->
-                            <!--<span th:text="${collaborator.name}" class="primary"></span>-->
-                            <!--<span class="secondary"></span>-->
-                        <!--</div>-->
                     </div>
                     <div class="actions">
+                        <form th:action="@{|/projects/${project.id}/delete|}" method="post" th:object="${project}">
                         <a class="button" th:href="@{|/projects/${project.id}/edit|}">Edit Project</a>
                         <a class="button" th:href="@{|/projects/${project.id}/collaborators|}">Edit Collaborators</a>
+                        <input type="submit" class="button" value="Delete"/>
+                        </form>
                     </div>
                 </div>
             </div>
