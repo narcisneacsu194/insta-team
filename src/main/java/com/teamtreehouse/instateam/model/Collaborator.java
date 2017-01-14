@@ -1,8 +1,14 @@
 package com.teamtreehouse.instateam.model;
 
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Collaborator {
@@ -16,6 +22,11 @@ public class Collaborator {
 
     @ManyToOne
     private Role role;
+
+    @ManyToMany(targetEntity = Project.class)
+    @JoinTable(name = "project_collaborator", joinColumns = {@JoinColumn(name = "collaboratorsassigned_id")},
+            inverseJoinColumns = {@JoinColumn(name = "project_id")})
+    private List<Project> projects = new ArrayList<>();
 
     public Collaborator(){
 

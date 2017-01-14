@@ -1,5 +1,7 @@
 package com.teamtreehouse.instateam.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,7 +21,7 @@ public class Role {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
     private List<Collaborator> collaborators = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "rolesNeeded", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "rolesNeeded", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Project> projects;
 
     public Role(){

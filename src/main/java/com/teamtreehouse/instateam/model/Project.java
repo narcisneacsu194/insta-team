@@ -1,10 +1,10 @@
 package com.teamtreehouse.instateam.model;
 
 import javax.persistence.*;
-import javax.persistence.criteria.Fetch;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,10 +23,14 @@ public class Project {
 
     private String status;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    private Date dateCreated;
+
+    @ManyToMany
     private List<Role> rolesNeeded = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Collaborator.class)
+    @JoinTable(name = "project_collaborator", joinColumns = {@JoinColumn(name = "project_id")},
+            inverseJoinColumns = {@JoinColumn(name = "collaboratorsassigned_id")})
     private List<Collaborator> collaboratorsAssigned = new ArrayList<>();
 
     public Project(){
@@ -63,6 +67,14 @@ public class Project {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public List<Role> getRolesNeeded() {
