@@ -20,7 +20,13 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+// This is the Project entity controller. It has methods that receive HTTP POST and GET requests from the view,
+// in order to store or retrieve information into or from the database.
+// The data is stored/retrieved using the ProjectService, RoleService, and
+// CollaboratorService interfaces. The concepts used here are dependency injection
+// with autowiring. This means that the Spring application is passing to the ProjectService,
+// RoleService and CollaboratorService a ProjectServiceImpl, RoleServiceImpl and
+// CollaboratorServiceImpl object at runtime.
 @Controller
 public class ProjectController {
 
@@ -33,12 +39,14 @@ public class ProjectController {
     @Autowired
     private CollaboratorService collaboratorService;
 
+    // This method receives an HTTP GET request for listing all the available projects stored in the database.
     @RequestMapping("/")
     public String listProjects(Model model){
         model.addAttribute("projects", projectService.findAll());
         return "project/index";
     }
 
+    // This method maps the positions in a list of the collaborators in regard of the needed roles.
     private List<Collaborator> getCollaboratorListThatHasASizeEqualToTheRoleListSize(Project project){
         List<Collaborator> collaboratorListThatHasASizeEqualToTheRoleListSize = new ArrayList<>();
         boolean isRoleIdEqualToTheCollaboratorRoleId;
@@ -64,6 +72,8 @@ public class ProjectController {
         return collaboratorListThatHasASizeEqualToTheRoleListSize;
     }
 
+    // This method receives an HTTP GET request for displaying a detailed page of a specified project from
+    // the database.
     @RequestMapping("/projects/{projectId}/detail")
     public String projectDetails(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
@@ -73,6 +83,7 @@ public class ProjectController {
         return "project/project_detail";
     }
 
+    // This method receives an HTTP GET request for displaying a form to add a new project.
     @RequestMapping(value = "/project-form")
     public String projectAddForm(Model model){
         if(!model.containsAttribute("project")){
@@ -84,6 +95,9 @@ public class ProjectController {
         return "project/edit_project";
     }
 
+    // This method receives an HTTP POST request from the client. It tries to add a new project in the database using
+    // the passed information. If the information passed in the form is valid, a positive flash message appears, saying that the project
+    // has been successfully added. Otherwise, an error flash message pops up, saying that some or all the information entered is incorrect.
     @RequestMapping(value = "/add-project", method = RequestMethod.POST)
     public String addProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
@@ -100,6 +114,9 @@ public class ProjectController {
         return String.format("redirect:/projects/%s/detail", project.getId());
     }
 
+    // This method receives an HTTP GET request from the client. It displays all the needed roles of a specific project, and beside them
+    // all the available collaborators in a drop-down. If a role has a collaborator associated with in the project, that collaborator will
+    // be the first option displayed in the drop-down.
     @RequestMapping(value = "/projects/{projectId}/collaborators")
     public String editProjectCollaborators(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
@@ -113,10 +130,10 @@ public class ProjectController {
 
         model.addAttribute("roles", roles);
         model.addAttribute("project", project);
-//        model.addAttribute("collaborators", getCollaboratorListThatHasASizeEqualToTheRoleListSize(project));
         return "project/project_collaborators";
     }
 
+    // This method receives an HTTP GET request for displaying a form for editing an existing project from the database.
     @RequestMapping(value = "/projects/{projectId}/edit")
     public String projectEditForm(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
@@ -126,6 +143,9 @@ public class ProjectController {
         return "project/edit_project";
     }
 
+    // This method receives an HTTP POST request for editing an existing project from the database.
+    // If the information passed is valid, a positive flash message will be displayed.
+    // Otherwise, an error message pops up, saying that the information passed is somehow invalid.
     @RequestMapping(value = "/edit-project", method = RequestMethod.POST)
     public String editProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
@@ -144,6 +164,8 @@ public class ProjectController {
         return String.format("redirect:/projects/%s/detail", project.getId());
     }
 
+    // This method receives an HTTP POST request that assigns a collaborator to a needed role from a project.
+    // A positive flash message pops up, saying that the collaborators have been edited successfully.
     @RequestMapping(value = "/edit-collaborators/{projectId}", method = RequestMethod.POST)
     public String editCollaborators(@PathVariable Long projectId, Project project, RedirectAttributes redirectAttributes){
         Project actualProject = projectService.findById(projectId);
@@ -159,6 +181,8 @@ public class ProjectController {
         return String.format("redirect:/projects/%s/detail", projectId);
     }
 
+    // This method receives an HTTP POST request from the client, to delete a specific project from the database.
+    // A positive flash message pops up, saying that the delete operation succeeded as expected.
     @RequestMapping(value = "/projects/{projectId}/delete", method = RequestMethod.POST)
     public String deleteProject(@PathVariable Long projectId, RedirectAttributes redirectAttributes){
         Project project = projectService.findById(projectId);

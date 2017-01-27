@@ -7,7 +7,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-
+// This pojo entity has variable, getters and setters that describe a Role.
+// Basic validation is present for the name and description fields.
+// It has a One to many relationship with the Collaborator entity.
+// It also has a ManyToMany relationship with the Project entity.
 @Entity
 public class Role {
     @Id
