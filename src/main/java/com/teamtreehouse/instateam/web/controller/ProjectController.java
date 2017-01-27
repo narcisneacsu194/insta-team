@@ -109,8 +109,11 @@ public class ProjectController {
             roles.add(roleService.findById(role.getId()));
         }
 
+        project.setCollaboratorsAssigned(getCollaboratorListThatHasASizeEqualToTheRoleListSize(project));
+
         model.addAttribute("roles", roles);
         model.addAttribute("project", project);
+//        model.addAttribute("collaborators", getCollaboratorListThatHasASizeEqualToTheRoleListSize(project));
         return "project/project_collaborators";
     }
 
