@@ -6,11 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-// This pojo entity has variable, getters and setters that describe a Project.
-// Basic validation is present for the name and description fields.
-// It has a Many to many relationship with the Role entity.
-// It also has a ManyToMany relationship with the Collaborator entity. A join table is created in the database
-// to support this last relationship.
+
 @Entity
 public class Project {
     @Id

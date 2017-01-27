@@ -11,21 +11,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-// This spring component converts Collaborator objects from the String form that it has in Thymeleaf view to
-// it's actual counterpart from Java code.
+
 @Component
 public class StringCollaboratorConverter implements Converter<String, Collaborator>{
     @Autowired
     private CollaboratorDao collaboratorDao;
 
-    // This method takes the collaborator identifier as a string, converts it to a Long variable, and it uses it
-    // to retrieve that specific object from the database.
     @Override
     public Collaborator convert(String source) {
         return collaboratorDao.findById(new Long(source));
     }
 
-    // This Bean method autowires a ConversionService object. The conversion operation would not be possible without this Java bean.
     @Bean
     public ConversionService getConversionService(){
         ConversionServiceFactoryBean conversionServiceFactoryBean = new ConversionServiceFactoryBean();
