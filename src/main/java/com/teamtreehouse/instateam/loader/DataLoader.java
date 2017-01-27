@@ -1,3 +1,5 @@
+package com.teamtreehouse.instateam.loader;
+
 import com.teamtreehouse.instateam.dao.CollaboratorDao;
 import com.teamtreehouse.instateam.dao.ProjectDao;
 import com.teamtreehouse.instateam.dao.RoleDao;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class DataLoader implements ApplicationRunner{
@@ -36,8 +40,8 @@ public class DataLoader implements ApplicationRunner{
             Project project = new Project();
             project.setName("project " + i);
             project.setDescription("description " + i);
-            project.setStatus("status " + i);
-
+            project.setStatus("Archived");
+            project.setDateCreated(new Date());
             project.addRole(roleDao.findById((long) i));
             project.addCollaborator(collaboratorDao.findById((long) i));
 
