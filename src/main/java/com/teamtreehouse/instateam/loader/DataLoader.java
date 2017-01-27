@@ -12,7 +12,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-
+// This Spring component class loads Role, Collaborator and Project data whenever the application is being
+// deployed/redeployed. This helps you to see if firstly there is something wrong with the database or Dao methods.
+// In the hibernate config file, it is specified that whenever the application deployes/redeploys,
+// the existing tables are dropped and recreated.
 @Component
 public class DataLoader implements ApplicationRunner{
 
@@ -25,6 +28,8 @@ public class DataLoader implements ApplicationRunner{
     @Autowired
     private ProjectDao projectDao;
 
+    // This overridden method initializes Role, Collaborator and Project objects,
+    // adds generic information for them and then saves them in the database.
     @Override
     public void run(ApplicationArguments args) throws Exception {
         for(int i = 1;i <= 5;i++){

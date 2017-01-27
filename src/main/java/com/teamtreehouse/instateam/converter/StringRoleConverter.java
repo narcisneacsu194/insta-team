@@ -11,18 +11,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
+// This spring component converts Role objects from the String form that it has in Thymeleaf view to
+// it's actual counterpart from Java code.
 @Component
 public class StringRoleConverter implements Converter<String, Role>{
 
     @Autowired
     private RoleDao roleDao;
 
+    // This method takes the role identifier as a string, converts it to a Long variable, and it uses it
+    // to retrieve that specific object from the database.
     @Override
     public Role convert(String source) {
         return roleDao.findById(new Long(source));
     }
 
+    // This Bean method autowires a ConversionService object. The conversion operation would not be possible without this Java bean.
     @Bean
     public ConversionService getConversionService(){
         ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();

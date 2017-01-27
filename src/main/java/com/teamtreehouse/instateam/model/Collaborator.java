@@ -9,7 +9,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-
+// This pojo entity has variable, getters and setters that describe a Collaborator.
+// Basic validation is present for the name field.
+// The Collaborator entity has a ManyToOne relationship with the Role entity.
+// It also has a ManyToMany relationship with the Project entity. A join table is created in the database
+// to support this last relationship.
 @Entity
 public class Collaborator {
     @Id
