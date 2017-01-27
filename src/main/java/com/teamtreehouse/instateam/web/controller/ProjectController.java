@@ -39,12 +39,37 @@ public class ProjectController {
         return "project/index";
     }
 
+    private List<Collaborator> getCollaboratorListThatHasASizeEqualToTheRoleListSize(Project project){
+        List<Collaborator> collaboratorListThatHasASizeEqualToTheRoleListSize = new ArrayList<>();
+        boolean isRoleIdEqualToTheCollaboratorRoleId;
+
+        for(Role role : project.getRolesNeeded()){
+            isRoleIdEqualToTheCollaboratorRoleId = false;
+
+            for(Collaborator collaborator : project.getCollaboratorsAssigned()){
+                if(collaborator.getRole().getId().equals(role.getId())){
+                    isRoleIdEqualToTheCollaboratorRoleId = true;
+
+                    collaboratorListThatHasASizeEqualToTheRoleListSize.add(collaborator);
+
+                    break;
+                }
+            }
+
+            if(!isRoleIdEqualToTheCollaboratorRoleId){
+                collaboratorListThatHasASizeEqualToTheRoleListSize.add(null);
+            }
+        }
+
+        return collaboratorListThatHasASizeEqualToTheRoleListSize;
+    }
+
     @RequestMapping("/projects/{projectId}/detail")
     public String projectDetails(@PathVariable Long projectId, Model model){
         Project project = projectService.findById(projectId);
         model.addAttribute("project", project);
         model.addAttribute("roles", project.getRolesNeeded());
-        model.addAttribute("collaborators", project.getCollaboratorsAssigned());
+        model.addAttribute("collaborators", getCollaboratorListThatHasASizeEqualToTheRoleListSize(project));
         return "project/project_detail";
     }
 
@@ -126,9 +151,9 @@ public class ProjectController {
         }
         actualProject.setCollaboratorsAssigned(actualCollaborators);
         projectService.save(actualProject);
-        redirectAttributes.addFlashAttribute("flash", new FlashMessage(String.format("Project collaborators have been added/edited successfully."),
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Project collaborators have been added/edited successfully.",
                 FlashMessage.Status.SUCCESS));
-        return String.format("redirect:/projects/%s/detail", project.getId());
+        return String.format("redirect:/projects/%s/detail", projectId);
     }
 
     @RequestMapping(value = "/projects/{projectId}/delete", method = RequestMethod.POST)

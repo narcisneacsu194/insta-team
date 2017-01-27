@@ -17,16 +17,13 @@
                         <h3>Roles &amp; Collaborators</h3>
                         <div th:each="role : ${roles}" class="list-item">
                             <span th:text="${role.name}" class="primary"></span>
-                            <span class="secondary" th:if="${project.collaboratorsAssigned.size() == 0}">
+                            <span class="secondary" th:if="${collaborators.size() == 0}">
                                 [Unassigned]
                             </span>
-                            <div th:if="${project.collaboratorsAssigned.size() > 0}">
-                                <span th:if="${project.collaboratorsAssigned[__${roleStat.index}__] != null}"
-                                      th:text="${project.collaboratorsAssigned[__${roleStat.index}__].name}" class="secondary"></span>
-                                <span th:if="${project.collaboratorsAssigned[__${roleStat.index}__] == null}"
-                                      class="secondary">
-                                    [Unassigned]
-                                </span>
+                            <div th:if="${collaborators.size() > 0}">
+                                <span th:if="${collaborators[__${roleStat.index}__] != null}"
+                                      th:text="${collaborators[__${roleStat.index}__].name}" class="secondary"></span>
+                                <span th:if="${collaborators[__${roleStat.index}__] == null}" class="secondary">[Unassigned]</span>
                             </div>
                         </div>
                     </div>
