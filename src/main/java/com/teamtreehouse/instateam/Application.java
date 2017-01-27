@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 /*
 * This is the class where the main method application resides.
 * The main method deploys this spring application, using the static method run of the SpringApplication class.
-* This project actually is an application for project development project management.
+* This project actually is an application for development project management.
 * You have roles, collaborators, and project entities.
 * A project consists of a name, description, and displays the roles needed to be filled, and along those the collaborators assigned to these positions.
 * A role in the project may or may not be filled by any collaborator.
